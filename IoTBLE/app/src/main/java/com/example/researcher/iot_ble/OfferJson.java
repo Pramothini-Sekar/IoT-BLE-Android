@@ -6,22 +6,22 @@ package com.example.researcher.iot_ble;
 
 public class OfferJson {
 
-    private String name;
-    private String value;
+    private String item;
+    private String discount;
 
-    public String getName(){
-        return name;
+    public String getItem(){
+        return item;
     }
 
-    public String getValue(){
-        return value;
+    public String getDiscount(){
+        return discount;
     }
 
-    public void setName(String name){
-        this.name = name;
+    public void setItem(String name){
+        this.item = name;
     }
 
-    public void setValue(String value){
-        this.value = value;
+    public void setDiscount(String value){
+        this.discount = value;
     }
 }

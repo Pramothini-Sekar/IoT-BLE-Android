@@ -3,7 +3,6 @@ package com.example.researcher.iot_ble;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,7 +13,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Iterator;
+import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -36,32 +35,26 @@ public class OfferActivity extends AppCompatActivity {
                 if(responseBody!=null) {
                     String response = new String(responseBody);
                     offerId.setText(response);
+                    ArrayList<OfferJson> offerJsonArrayList = new ArrayList<>();
+
                     try {
                         JSONObject jsonObject = new JSONObject(response);
-                        JSONArray offerArray = jsonObject.getJSONArray("Offers");
-
-                        if(offerArray.length()>0){
-                            for(int i=0;i<offerArray.length();i++){
-                                JSONObject eachOffer = offerArray.getJSONObject(i);
-                                Iterator<String> stringKeys = eachOffer.keys();
-                                /*
-                                HashMap<String,String> offerList = new HashMap<>();
-                                while(stringKeys.hasNext()){
-                                    offerList.put(stringKeys.next(),eachOffer.getString(stringKeys.next()));
-                                }
-                                Set<String> keys = offerList.keySet();
-                                for(String key: keys){
-                                    Log.i("Hash Val",offerList.get(key));
-                                }
-                                */
-                                showText.setText(stringKeys.next());
-                                Log.i("Iter",stringKeys.next());
-                            }
+                        JSONArray jsonArray = jsonObject.getJSONArray("Offers");
+                        for(int jsonLength = 0; jsonLength<jsonArray.length(); jsonLength++){
+                            JSONObject offerList = jsonArray.getJSONObject(jsonLength);
+                            String itemName = offerList.getString("item");
+                            String discountVal = offerList.getString("discount");
+                            OfferJson offerJson = new OfferJson();
+                            offerJson.setItem(itemName);
+                            offerJson.setDiscount(discountVal);
+                            offerJsonArrayList.add(offerJson);
                         }
-
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+
+
+                    Toast.makeText(OfferActivity.this,offerJsonArrayList.get(0).toString(),Toast.LENGTH_LONG).show();
                 }
 
             }
